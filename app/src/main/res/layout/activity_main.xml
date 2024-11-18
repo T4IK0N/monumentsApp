@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:paddingTop="50dp">
+        android:paddingTop="60dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -37,7 +37,7 @@
                 style="@style/mainMapIconStyle"
                 android:id="@+id/mapIcon"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/mapIconDescription"
                 android:clickable="true"
                 android:layout_gravity="end"/>
@@ -45,7 +45,7 @@
                 style="@style/locationIconStyle"
                 android:id="@+id/locationIcon"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/mapIconDescription"
                 android:clickable="true"
                 android:layout_gravity="end"/>
@@ -77,9 +77,10 @@
                 <!-- search icon -->
                 <ImageView
                     android:id="@+id/searchIcon"
+                    android:src="@drawable/search_icon"
                     android:layout_width="18dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/search_icon"
+                    android:clickable="true"
                     android:contentDescription="@string/searchIconDescription" />
             </LinearLayout>
         </LinearLayout>
