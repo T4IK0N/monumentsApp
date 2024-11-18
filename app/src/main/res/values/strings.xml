@@ -1,0 +1,9 @@
+<resources>
+    <!--  main  -->
+    <string name="app_name">Zabytki</string>
+    <string name="mainLocalisationText">Warszawa</string> <!-- warszawa for default -->
+    <string name="searchEditTextHint">Enter your localisation</string>
+        <!-- main description -->
+    <string name="mapIconDescription">Map Icon</string>
+    <string name="searchIconDescription">Search Icon</string>
+</resources>

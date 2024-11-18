@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  main  -->
+    <style name="mainLocalisationTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">start</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">@font/noto_serif_bold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="mainMapIconStyle">
+        <item name="android:src">@drawable/map_icon</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:contentDescription">@string/mapIconDescription</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="locationIconStyle">
+        <item name="android:src">@drawable/location_icon</item>
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:contentDescription">@string/mapIconDescription</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="searchEditTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:autofillHints" />
+        <item name="android:background">@color/transparent</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/lighter_gray</item>
+        <item name="android:hint">@string/searchEditTextHint</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+</resources>

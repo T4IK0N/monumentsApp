@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+    <color name="lighter_gray">#d1d1d1</color>
+    <color name="light_gray">#787878</color>
+    <color name="dark_gray">#191919</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- lt. = light theme -->
+    <color name="lt_background_color">@color/white</color>
+    <color name="lt_text_color">@color/black</color>
+
+    <!--  dt. = dark theme  -->
+    <color name="dt_background_color">@color/dark_gray</color>
+    <color name="dt_text_color">@color/white</color>
+</resources>
