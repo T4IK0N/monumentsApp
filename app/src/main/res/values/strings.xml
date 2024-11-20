@@ -2,8 +2,28 @@
     <!--  main  -->
     <string name="app_name">Zabytki</string>
     <string name="mainLocalisationText">Warszawa</string> <!-- warszawa for default -->
+    <string name="categoryText">Category</string>
+    <string name="popularText">Popular</string>
+    <string name="restaurantCategoryText">Restaurants</string>
+    <string name="monumentsCategoryText">Monuments</string>
+    <string name="natureCategoryText">Nature</string>
     <string name="searchEditTextHint">Enter your localisation</string>
+
+    <string name="popularText1">Atrakcja1</string>
+    <string name="popularText2">Atrakcja2</string>
+    <string name="popularText3">Atrakcja3</string>
+    <string name="popularText4">Atrakcja4</string>
+
+    <string name="popularRating1">4.9</string>
+    <string name="popularRating2">3.8</string>
+    <string name="popularRating3">5.0</string>
+    <string name="popularRating4">2.5</string>
         <!-- main description -->
     <string name="mapIconDescription">Map Icon</string>
+    <string name="localisationIconDescription">Localisation Icon</string>
     <string name="searchIconDescription">Search Icon</string>
+    <string name="restaurantCategoryIconDescription">Restaurants Icon</string>
+    <string name="monumentsCategoryIconDescription">Monuments Icon</string>
+    <string name="natureCategoryIconDescription">Nature Icon</string>
+    <string name="popularImageDescription">Popular Image</string>
 </resources>
