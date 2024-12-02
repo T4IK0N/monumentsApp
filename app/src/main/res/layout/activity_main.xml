@@ -49,6 +49,19 @@
 
         </LinearLayout>
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -97,6 +110,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/category_restaurant"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
@@ -129,6 +143,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/category_monuments"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
@@ -161,6 +176,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/category_nature"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
@@ -215,377 +231,381 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginTop="5dp">-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja1"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText1"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating1"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja2"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText2"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating2"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginTop="5dp">-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja3"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText3"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating3"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja4"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText4"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating4"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginTop="5dp">-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja1"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText1"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating1"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+
+<!--                    <androidx.cardview.widget.CardView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        app:cardCornerRadius="5dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:scaleType="centerCrop"-->
+<!--                            android:src="@drawable/atrakcja2"-->
+<!--                            android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                        <RelativeLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp">-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                android:fontFamily="@font/poppins"-->
+<!--                                android:text="@string/popularText2"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:textSize="12sp"-->
+<!--                                android:layout_alignParentStart="true" />-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:orientation="horizontal"-->
+<!--                                android:background="@drawable/rounded_background_rating"-->
+<!--                                android:padding="4dp"-->
+<!--                                tools:ignore="RelativeOverlap">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="16dp"-->
+<!--                                    android:layout_height="16dp"-->
+<!--                                    android:src="@drawable/star_icon"-->
+<!--                                    android:contentDescription="@string/popularImageDescription" />-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="4dp"-->
+<!--                                    android:text="@string/popularRating2"-->
+<!--                                    android:textColor="@color/white"-->
+<!--                                    android:textSize="12sp"-->
+<!--                                    android:fontFamily="@font/poppins" />-->
+<!--                            </LinearLayout>-->
+<!--                        </RelativeLayout>-->
+<!--                    </androidx.cardview.widget.CardView>-->
+<!--                </LinearLayout>-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja1"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText1"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating1"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja2"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText2"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating2"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja3"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText3"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating3"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja4"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText4"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating4"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja1"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText1"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating1"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_margin="5dp"
-                        app:cardCornerRadius="5dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/atrakcja2"
-                            android:contentDescription="@string/popularImageDescription" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                android:fontFamily="@font/poppins"
-                                android:text="@string/popularText2"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:layout_alignParentStart="true" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentBottom="true"
-                                android:orientation="horizontal"
-                                android:background="@drawable/rounded_background_rating"
-                                android:padding="4dp"
-                                tools:ignore="RelativeOverlap">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/star_icon"
-                                    android:contentDescription="@string/popularImageDescription" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:text="@string/popularRating2"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
         </ScrollView>

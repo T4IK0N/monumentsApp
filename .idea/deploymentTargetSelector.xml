@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-18T20:16:41.622945500Z">
+        <DropdownSelection timestamp="2024-11-29T16:03:14.062898600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Bogumil\.android\avd\Samsung_S22_API_VanillaIceCream.avd" />

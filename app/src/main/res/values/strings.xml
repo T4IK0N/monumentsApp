@@ -18,7 +18,8 @@
     <string name="popularRating2">3.8</string>
     <string name="popularRating3">5.0</string>
     <string name="popularRating4">2.5</string>
-        <!-- main description -->
+
+    <!-- main description -->
     <string name="mapIconDescription">Map Icon</string>
     <string name="localisationIconDescription">Localisation Icon</string>
     <string name="searchIconDescription">Search Icon</string>
@@ -26,4 +27,10 @@
     <string name="monumentsCategoryIconDescription">Monuments Icon</string>
     <string name="natureCategoryIconDescription">Nature Icon</string>
     <string name="popularImageDescription">Popular Image</string>
+
+    <!-- map  -->
+    <string name="closeMapDescription">close map</string>
+
+    <!-- popular -->
+    <string name="starIconDescription">Star Icon</string>
 </resources>
