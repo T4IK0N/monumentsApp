@@ -1,6 +1,8 @@
 package com.example.zabytki
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -9,11 +11,14 @@ import android.telecom.Call
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentContainerView
@@ -23,6 +28,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -48,6 +54,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PopularAttractionAdapter
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -76,10 +83,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         adapter = PopularAttractionAdapter(this, listOf())
         recyclerView.adapter = adapter
 
-//        onBackPressedDispatcher.addCallback(this) {
-//            // Pass (its back arrow)
-//        }
-
+        onBackPressedDispatcher.addCallback(this) {
+            // Pass ( disable back arrow)
+        }
 
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, "API_KEY")
@@ -96,25 +102,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                val userLatLng = LatLng(location.latitude, location.longitude)
-                fetchPopularAttractions(userLatLng)
-            } else {
-                val defaultLocation = LatLng(52.2297, 21.0122) // Domyślnie Warszawa
-                fetchPopularAttractions(defaultLocation)
-            }
-        }
-
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -123,92 +112,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             showUserLocation()
         }
 
-//        findViewById<ImageView>(R.id.mapIcon).setOnClickListener {
-//
-//        }
-
         findViewById<ImageView>(R.id.mapIcon).setOnClickListener {
-            val mainText = mainTextView.text.toString()
-            searchLocationAndShowOnMap(mainText)
-            val defaultLocation = LatLng(52.2297, 21.0122) // domyślnie Warszawa
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
-            showNearbyPlaces(defaultLocation)
+            searchLocationAndShowOnMap(map, mainTextView.text.toString())
         }
 
+        val apiKey = "API_KEY"
+        fetchNearbyPlaces(52.2297, 21.0122, apiKey) { placeIds ->
+            placeIds.forEach { placeId ->
+                fetchPlaceDetails(placeId, apiKey) { name, rating, photoReference ->
+//                    println("Place Name: $name, Rating: $rating, Photo: $photoReference")
 
-    }
-
-    private fun fetchPopularAttractions(location: LatLng) {
-        val radius = 1000 // 1 km
-        val typeQuery = listOf("tourist_attraction", "restaurant", "park").joinToString("|")
-
-        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=${location.latitude},${location.longitude}" +
-                "&radius=$radius" +
-                "&type=$typeQuery" +
-                "&key=API_KEY"
-
-        val queue = Volley.newRequestQueue(this)
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-                val results = response.getJSONArray("results")
-                val attractions = mutableListOf<PopularAttraction>()
-
-                for (i in 0 until results.length()) {
-                    val place = results.getJSONObject(i)
-
-                    val name = place.getString("name")
-                    val rating = place.optDouble("rating", 0.0).toString()
-                    val photoReference = place.optJSONArray("photos")?.getJSONObject(0)
-                        ?.getString("photo_reference")
-
-                    val imageUrl = if (photoReference != null) {
-                        "https://maps.googleapis.com/maps/api/place/photo?" +
-                                "maxwidth=400" +
-                                "&photo_reference=$photoReference" +
-                                "&key=API_KEY"
-                    } else {
-                        null
+                    findViewById<TextView>(R.id.b).text = "Place Name: $name, Rating: $rating, Photo: $photoReference"
+                    Log.d("NearbyPlaces", "Fetched Place IDs: $placeIds")
+                    Log.d("PlaceDetails", "Fetched Details: $name, $rating, $photoReference")
+                    if (photoReference != null) {
+                        loadPlacePhoto(photoReference, apiKey, findViewById(R.id.a))
                     }
-
-                    if (imageUrl != null) {
-                        attractions.add(PopularAttraction(imageUrl, name, rating))
-                    }
-
-                    // Break if we already have 10 results
-                    if (attractions.size == 10) break
                 }
-
-                // Update RecyclerView
-                updateRecyclerView(attractions)
-            },
-            { error ->
-                Toast.makeText(this, "Error fetching attractions: $error", Toast.LENGTH_SHORT).show()
             }
-        )
-
-        queue.add(jsonObjectRequest)
+        }
     }
 
-    private fun updateRecyclerView(attractions: List<PopularAttraction>) {
-        adapter.updateAttractions(attractions)
-    }
-
-
-
-
-
-
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        map.uiSettings.isZoomControlsEnabled = true
-        map.uiSettings.isMyLocationButtonEnabled = false
-        map.uiSettings.isMapToolbarEnabled = false
-
-        findViewById<FragmentContainerView>(R.id.map).visibility = View.GONE // hide map
-    }
+    // user location (your localisation)
 
     private fun showUserLocation() {
         checkLocationPermissionAndShowMap { location ->
@@ -221,40 +146,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return@checkLocationPermissionAndShowMap
             }
             map.isMyLocationEnabled = true
-            updateMapWithLocation(userLatLng, "Twoja lokalizacja")
-            showNearbyMonuments(userLatLng)
+            updateMapWithLocation(userLatLng, "To ty!")
         }
-    }
-
-    private fun searchLocationAndShowOnMap(query: String) {
-        val geocoder = Geocoder(this)
-        val addressList = geocoder.getFromLocationName(query, 1)
-        if (addressList.isNullOrEmpty()) {
-            Toast.makeText(this, "Nie znaleziono lokalizacji: $query", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val location = addressList[0]
-        val searchedLatLng = LatLng(location.latitude, location.longitude)
-        updateMapWithLocation(searchedLatLng, query)
-        showNearbyMonuments(searchedLatLng)
-    }
-
-    private fun updateMapWithLocation(latLng: LatLng, title: String) {
-        findViewById<FragmentContainerView>(R.id.map).visibility = View.VISIBLE
-        map.clear()
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-        map.addMarker(MarkerOptions().position(latLng).title(title))
     }
 
     private fun checkLocationPermissionAndShowMap(callback: (Location) -> Unit) {
@@ -273,75 +169,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun showNearbyMonuments(userLatLng: LatLng) {
-        val monuments = listOf(
-            LatLng(userLatLng.latitude + 0.005, userLatLng.longitude),
-            LatLng(userLatLng.latitude, userLatLng.longitude + 0.005),
-            LatLng(userLatLng.latitude - 0.005, userLatLng.longitude - 0.005)
-        )
+    // searched location (default warsaw)
 
-        for (monument in monuments) {
-            map.addMarker(
-                MarkerOptions()
-                    .position(monument)
-                    .title("Zabytek")
-                    .snippet("Znajduje się w pobliżu")
-            )
+    private fun searchLocationAndShowOnMap(map: GoogleMap, query: String): LatLng {
+        val geocoder = Geocoder(this)
+        val addressList = geocoder.getFromLocationName(query, 1)
+        if (addressList.isNullOrEmpty()) {
+            Toast.makeText(this, "Nie znaleziono lokalizacji: $query", Toast.LENGTH_SHORT).show()
+            return LatLng(0.0, 0.0)
+        }
+
+        val location = addressList[0]
+        val searchedLatLng = LatLng(location.latitude, location.longitude)
+        updateMapWithLocation(searchedLatLng, query)
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLng, 15f))
+        return searchedLatLng
+    }
+
+    private fun updateMapWithLocation(latLng: LatLng, title: String) {
+        findViewById<FragmentContainerView>(R.id.map).visibility = View.VISIBLE
+        map.clear()
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        map.addMarker(MarkerOptions().position(latLng).title(title))
+    }
+
+    // map cleaning/preparing
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isMyLocationButtonEnabled = false
+        map.uiSettings.isMapToolbarEnabled = false
+
+        findViewById<TextView>(R.id.mainText).setOnClickListener {
+            findViewById<FragmentContainerView>(R.id.map).visibility = View.GONE // hide map
         }
     }
 
-    private fun searchNearbyPlaces(location: LatLng, types: List<String>) {
-        val radius = 1000 // Radius in meters
-        val typeQuery = types.joinToString("|") // "tourist_attraction|restaurant|park"
-
-        val url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=${location.latitude},${location.longitude}" +
-                "&radius=$radius" +
-                "&type=$typeQuery" +
-                "&key=API_KEY"
-
-        val queue = Volley.newRequestQueue(this)
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-                val results = response.getJSONArray("results")
-                for (i in 0 until results.length()) {
-                    val place = results.getJSONObject(i)
-                    val name = place.getString("name")
-                    val lat = place.getJSONObject("geometry").getJSONObject("location").getDouble("lat")
-                    val lng = place.getJSONObject("geometry").getJSONObject("location").getDouble("lng")
-                    val latLng = LatLng(lat, lng)
-
-                    val typesArray = place.optJSONArray("types") ?: continue
-                    val placeType = when {
-                        typesArray.toString().contains("tourist_attraction") -> "Zabytek"
-                        typesArray.toString().contains("restaurant") -> "Restauracja"
-                        typesArray.toString().contains("park") -> "Park"
-                        else -> "Inne"
-                    }
-
-                    if (placeType in listOf("Zabytek", "Restauracja", "Park")) {
-                        map.addMarker(
-                            MarkerOptions()
-                                .position(latLng)
-                                .title(name)
-                                .snippet(placeType)
-                        )
-                    }
-                }
-            },
-            { error ->
-                Toast.makeText(this, "Błąd podczas pobierania danych: $error", Toast.LENGTH_SHORT).show()
-            }
-        )
-
-        queue.add(jsonObjectRequest)
-    }
-
-    private fun showNearbyPlaces(userLatLng: LatLng) {
-        searchNearbyPlaces(userLatLng, listOf("tourist_attraction", "restaurant", "park")) //zabytki, restauracje, parki
-    }
-
+    // check localisation perm
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -356,5 +222,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this, "Brak dostępu do lokalizacji", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+
+
+
+
+    // load photos
+
+    fun loadPlacePhoto(photoReference: String, apiKey: String, imageView: ImageView) {
+        val photoUrl = "https://maps.googleapis.com/maps/api/place/photo" +
+                "?maxwidth=400&photo_reference=$photoReference&key=$apiKey"
+
+        Glide.with(imageView.context)
+            .load(photoUrl)
+            .into(imageView)
     }
 }
