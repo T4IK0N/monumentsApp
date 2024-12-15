@@ -13,11 +13,23 @@
         android:layout_height="200dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/attractionImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:contentDescription="@string/popularImageDescription" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/attractionImageView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="1000dp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:padding="8dp"-->
+<!--            android:background="@drawable/rounded_background_rating"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textIsSelectable="true"-->
+<!--            android:textSize="12sp" />-->
 
         <TextView
             android:id="@+id/titleTextView"
