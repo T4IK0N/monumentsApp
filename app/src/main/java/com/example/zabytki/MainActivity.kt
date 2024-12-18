@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -91,42 +92,47 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            return
+//        }
+
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         findViewById<ImageView>(R.id.locationIcon).setOnClickListener {
             showUserLocation()
+//            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
+
+        val query = mainTextView.text.toString()
+        val searchedLatLng = searchedLocation(query)
 
         findViewById<ImageView>(R.id.mapIcon).setOnClickListener {
-            searchLocationAndShowOnMap(map, mainTextView.text.toString())
+//            searchLocationAndShowOnMap(map, mainTextView.text.toString())
+            searchedLatLng?.let { showLocationOnMap(it) }
         }
 
-        val warsawLatLng = LatLng(52.237049, 21.017532)
-        fetchNearbyPlacesAndShowInRecyclerView(warsawLatLng)
+//        val warsawLatLng = LatLng(53.132438, 23.158545)
+        fetchNearbyPlacesAndShowInRecyclerView(searchedLatLng)
 
 
         responseTextView = findViewById(R.id.responseTextView)
-
+//
 //        val apiKey = "INSERT_API_KEY"
 //        val placeId = "ChIJj61dQgK6j4AR4GeTYWZsKWw"
-
+//
 //        getPlaceDetails(apiKey, placeId)
     }
 
-    // Funkcja do pobierania Nearby Search i aktualizacji RecyclerView
-    private fun fetchNearbyPlacesAndShowInRecyclerView(latLng: LatLng) {
+    private fun fetchNearbyPlacesAndShowInRecyclerView(latLng: LatLng?) {
         val client = OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
@@ -142,10 +148,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
           "locationRestriction": {
             "circle": {
               "center": {
-                "latitude": ${latLng.latitude},
-                "longitude": ${latLng.longitude}
+                "latitude": ${latLng?.latitude},
+                "longitude": ${latLng?.longitude}
               },
-              "radius": 1500.0
+              "radius": 500.0
             }
           }
         }
@@ -172,6 +178,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     runOnUiThread {
                         Toast.makeText(this@MainActivity, "Błąd: ${response.code}", Toast.LENGTH_SHORT).show()
+                        Log.e("NearbySearchError", "Code: ${response.code}, Body: ${response.body?.string()}")
                     }
                 }
             }
@@ -179,6 +186,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 runOnUiThread {
                     Toast.makeText(this@MainActivity, "Błąd połączenia: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("NearbySearchFailure", e.message.toString())
                 }
             }
         })
@@ -200,7 +208,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val photos = place.optJSONArray("photos")
                 val photoUrl = photos?.let {
                     val photoReference = it.getJSONObject(0).getString("name")
-                    "https://places.googleapis.com/v1/ $photoReference/media?maxHeightPx=400&maxWidthPx=400&key=$apiKey"
+                    "https://places.googleapis.com/v1/$photoReference/media?maxHeightPx=400&maxWidthPx=400&key=$apiKey"
                 } ?: "https://via.placeholder.com/400"
 
                 attractions.add(PopularAttraction(photoUrl, displayName, rating))
@@ -228,7 +236,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 "latitude": ${latLng.latitude},
                 "longitude": ${latLng.longitude}
               },
-              "radius": 1500.0
+              "radius": 500.0
             }
           }
         }
@@ -335,22 +343,40 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // searched location (default warsaw)
 
-    private fun searchLocationAndShowOnMap(map: GoogleMap, query: String): LatLng {
+//    private fun searchLocationAndShowOnMap(map: GoogleMap, query: String): LatLng {
+//        val geocoder = Geocoder(this)
+//        val addressList = geocoder.getFromLocationName(query, 1)
+//        if (addressList.isNullOrEmpty()) {
+//            Toast.makeText(this, "Nie znaleziono lokalizacji: $query", Toast.LENGTH_SHORT).show()
+//            return LatLng(0.0, 0.0)
+//        }
+//
+//        val location = addressList[0]
+//        val searchedLatLng = LatLng(location.latitude, location.longitude)
+//
+//        updateMapWithLocation(searchedLatLng)
+//        searchNearbyPlacesAndShowOnMap(searchedLatLng)
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLng, 15f))
+//
+//        return searchedLatLng
+//    }
+
+    private fun searchedLocation(query: String): LatLng? {
         val geocoder = Geocoder(this)
         val addressList = geocoder.getFromLocationName(query, 1)
-        if (addressList.isNullOrEmpty()) {
+        return if (!addressList.isNullOrEmpty()) {
+            val location = addressList[0]
+            LatLng(location.latitude, location.longitude)
+        } else {
             Toast.makeText(this, "Nie znaleziono lokalizacji: $query", Toast.LENGTH_SHORT).show()
-            return LatLng(0.0, 0.0)
+            null
         }
+    }
 
-        val location = addressList[0]
-        val searchedLatLng = LatLng(location.latitude, location.longitude)
-        updateMapWithLocation(searchedLatLng)
-
-        searchNearbyPlacesAndShowOnMap(searchedLatLng)
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLng, 15f))
-        return searchedLatLng
+    private fun showLocationOnMap(latLng: LatLng) {
+        updateMapWithLocation(latLng)
+        searchNearbyPlacesAndShowOnMap(latLng)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
     private fun updateMapWithLocation(latLng: LatLng) {
